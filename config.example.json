@@ -1,0 +1,13 @@
+{
+  "reddit": {
+    "client_id": "",
+    "client_secret": "",
+    "username": "",
+    "password": "",
+    "user_agent": ""
+  },
+  "security": {
+    "api_key": ""
+  },
+  "local_dev": false
+}
