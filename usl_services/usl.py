@@ -31,6 +31,17 @@ async def fetch_usl_bans_for_user(username: str) -> USLV1FetchResponse:
             is_banned=False,
             search_result=USLV1FetchResponseSearchResult.NOT_FOUND
         )
+    except prawcore.exceptions.TooManyRequests as e:
+        error_detail = f'Rate limited by Reddit when fetching USL wiki page for user {username}.'
+        logger.warning(error_detail)
+
+        response_headers = {'Retry-After': str(e.retry_after)} if e.retry_after else {}
+
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=error_detail,
+            headers=response_headers
+        )
 
     logger.debug(f'Parsing and replaying ban actions for user {username}.')
 
